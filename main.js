@@ -8,8 +8,8 @@ const arrowRight = document.querySelector('#arrow-right')
 const dataset = []
 
 let isMoving = false
-let totalMovement = 0
-let count = 0
+let totalMovement = 0 // Is positive if moving to the right
+let count = 0 // Use as a memory to record previous offset
 
 /**
  * Translater cards on X using a movement
@@ -22,15 +22,16 @@ let count = 0
  */
 function translateCards(element, total, movement) {
   total += movement
-  element.style.transform = `translateX(-${total}px)`
+  element.style.transform = `translateX(${-1 * total}px)`
   return total
 }
 
 /**
- * Translate cards on X to 0
+ * Translate cards on X to the total
  *
  * @param {HTMLElement} element
  * @param {array} transitionClass
+ * @param {number} total
  *
  * @return {number}
  */
@@ -40,17 +41,50 @@ function resetSlider(element, transitionClass, total = 0) {
   return total
 }
 
+/**
+ * Translate to the max right
+ *
+ * @param {DOMRect} element - The element to place
+ */
+function clipToRight(element) {
+  // Right
+  const finalOffset = totalMovement - (window.innerWidth - element.right) + 16
+  totalMovement = resetSlider(
+    slider,
+    sliderTransitionClass,
+    // Fixed last card to the right
+    finalOffset
+  )
+
+  arrowRight.disabled = true
+}
+
+/**
+ * Translate to the max left
+ *
+ * @param {HTMLElement} element - The element to translate
+ */
+function clipToLeft(element) {
+  // Fix to the left
+  totalMovement = resetSlider(element, sliderTransitionClass)
+
+  arrowLeft.disabled = true
+}
+
+// Create a dataset to move cards
 cards.forEach((card, index) => {
   const offsetWidth = card.previousElementSibling ? card.previousElementSibling.offsetWidth : 0
+
+  const margin = index * 24
+  const total = count + margin
   dataset.push({
     width: card.offsetWidth,
     height: card.offsetHeight,
     totalWidth: count,
-    totalMargin: index * 24,
-    // Get the next card if 20% if out of the viewport
-    withPrevious: count + 0.2 * offsetWidth,
+    totalMargin: margin,
+    // Get the next card if 50% if out of the viewport
+    totalMiddle: total + 0.5 * card.offsetWidth,
   })
-  // Remove, because translate is negative, the margin
   count += card.offsetWidth
 })
 
@@ -108,65 +142,63 @@ arrowLeft.addEventListener('click', () => {
   }
 })
 
-// slider.addEventListener('mousedown', () => {
-//   isMoving = true
-//   // Remove transition class to avoid animation on mousemove
-//   slider.classList.remove(...sliderTransitionClass)
-// })
+slider.addEventListener('mousedown', () => {
+  isMoving = true
+  // Remove transition class to avoid animation on mousemove
+  slider.classList.remove(...sliderTransitionClass)
+})
 
-// slider.addEventListener('mousemove', (e) => {
-//   if (isMoving) {
-//     const { movementX } = e
-//     totalMovement = translateCards(slider, totalMovement, movementX)
-//   }
-// })
+slider.addEventListener('mousemove', (e) => {
+  if (isMoving) {
+    const { movementX } = e
+    totalMovement = translateCards(slider, totalMovement, -1 * movementX)
+  }
+})
 
-// slider.addEventListener('mouseup', (e) => {
-//   isMoving = false
+slider.addEventListener('mouseup', () => {
+  isMoving = false
 
-//   const lastCard = cards[cards.length - 1]
-//   const windowSize = window.innerWidth
-//   const posLastCard = lastCard.getBoundingClientRect().right
-//   if (posLastCard < windowSize) {
-//     totalMovement = resetSlider(
-//       slider,
-//       sliderTransitionClass,
-//       // Get distance between last card right and window right
-//       totalMovement + (windowSize - posLastCard) - 16
-//     )
-//   } else if (totalMovement > 0) {
-//     totalMovement = resetSlider(slider, sliderTransitionClass)
-//   } else {
-//     const indexItem = dataset.findIndex(({ withPrevious }) => -totalMovement < withPrevious)
-//     const item = dataset[indexItem]
-//     const margin = 24 * indexItem
-//     console.table(dataset)
-//     console.log(item)
-//     slider.classList.add(...sliderTransitionClass)
-//     totalMovement = translateCards(slider, -item.total - margin, 0)
-//   }
-// })
+  const lastCard = cards[cards.length - 1]
+  const posLastCard = lastCard.getBoundingClientRect()
+  const windowSize = window.innerWidth
 
-// document.addEventListener('mouseout', (e) => {
-//   const from = e.relatedTarget || e.toElement
-//   // Trigger only if mouseout from the page
-//   if (!from || from.nodeName === 'HTML') {
-//     isMoving = false
-//     const lastCard = cards[cards.length - 1]
-//     const windowSize = window.innerWidth
-//     const posLastCard = lastCard.getBoundingClientRect().right
-//     if (posLastCard < windowSize) {
-//       totalMovement = resetSlider(
-//         slider,
-//         sliderTransitionClass,
-//         // Get distance between last card right and window right
-//         totalMovement + (windowSize - posLastCard) - 16
-//       )
-//     } else if (totalMovement > 0) {
-//       totalMovement = resetSlider(slider, sliderTransitionClass)
-//     }
-//   }
-// })
+  if (posLastCard.right < windowSize) {
+    clipToRight(posLastCard)
+  } else if (totalMovement < 0) {
+    clipToLeft(slider)
+  } else {
+    // Follow
+
+    // Find the nearest card
+    console.table(dataset)
+    console.log(totalMovement)
+    const item = dataset.find(({ totalMiddle }) => totalMovement < totalMiddle)
+
+    slider.classList.add(...sliderTransitionClass)
+    totalMovement = translateCards(slider, item.totalWidth + item.totalMargin, 0)
+
+    arrowLeft.disabled = false
+    arrowRight.disabled = false
+  }
+})
+
+document.addEventListener('mouseout', (e) => {
+  const from = e.relatedTarget || e.toElement
+  // Trigger only if mouseout from the page
+  if (!from || from.nodeName === 'HTML') {
+    isMoving = false
+
+    const lastCard = cards[cards.length - 1]
+    const posLastCard = lastCard.getBoundingClientRect()
+    const windowSize = window.innerWidth
+
+    if (posLastCard.right < windowSize) {
+      clipToRight(posLastCard)
+    } else if (totalMovement < 0) {
+      clipToLeft(slider)
+    }
+  }
+})
 
 // il faut faire la gestion de l'aimantation en utilisant un find dans le mousemove dans le dataset avec le totalMovement
 // il fuat ajouter transform duration-500 lorsuqe il revient à 0 ou lorsqu'il se calera (et commencer à faire du fonctionnel)
@@ -175,3 +207,4 @@ arrowLeft.addEventListener('click', () => {
 // Ensuite, il faut jouer avec la quantité de déplacement pour modifier le translate dans le style
 // Il faudra aussi voir la gestion des arrows
 // Voir la gestion au clavier ensuite
+// il faut doucumenter à mort le code parce qu'il est pas simple
