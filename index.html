@@ -13,10 +13,7 @@
     />
   </head>
   <body class="bg-grey text-black pt-6">
-    <section
-      id="slider"
-      class="flex flex-col space-y-8 overflow-hidden px-4 py-16 bg-grey-secondary-light"
-    >
+    <section class="flex flex-col space-y-8 overflow-hidden px-4 py-16 bg-grey-secondary-light">
       <div class="flex flex-row justify-between items-center">
         <h2 class="text-4xl font-bold font-darker">Catégories</h2>
         <div class="flex flex-row space-x-6">
@@ -50,9 +47,25 @@
           </svg>
         </div>
       </div>
-      <ul class="flex flex-row space-x-6 text-primary-base transform">
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
-          <img src="/prevention.png" alt="illustration prévention" class="mx-auto h-24 w-24" />
+      <ul id="slider" class="flex flex-row space-x-6 text-primary-base">
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
+          <img
+            src="/prevention.png"
+            alt="illustration prévention"
+            class="mx-auto h-24 w-24"
+            draggable="false"
+          />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Prévention</span>
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="stroke-current">
@@ -65,11 +78,23 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
           <img
             src="/international.png"
             alt="illustration international"
             class="mx-auto h-24 w-24"
+            draggable="false"
           />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>International</span>
@@ -83,8 +108,24 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
-          <img src="/orientation.png" alt="illustration orientation" class="mx-auto h-24 w-24" />
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
+          <img
+            src="/orientation.png"
+            alt="illustration orientation"
+            class="mx-auto h-24 w-24"
+            draggable="false"
+          />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Orientation</span>
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="stroke-current">
@@ -97,11 +138,23 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
           <img
             src="/developpement durable.png"
             alt="illustration développement durable"
             class="mx-auto h-24 w-24"
+            draggable="false"
           />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Développement durable</span>
@@ -115,8 +168,24 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
-          <img src="/ethique.png" alt="illustration éthique" class="mx-auto h-24 w-24" />
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
+          <img
+            src="/ethique.png"
+            alt="illustration éthique"
+            class="mx-auto h-24 w-24"
+            draggable="false"
+          />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Éthique</span>
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="stroke-current">
@@ -129,8 +198,24 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
-          <img src="/experts.png" alt="illustration experts" class="mx-auto h-24 w-24" />
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
+          <img
+            src="/experts.png"
+            alt="illustration experts"
+            class="mx-auto h-24 w-24"
+            draggable="false"
+          />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Experts</span>
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="stroke-current">
@@ -143,8 +228,24 @@
             </svg>
           </div>
         </li>
-        <li class="flex flex-col space-y-6 rounded bg-white p-8 flex-shrink-0">
-          <img src="/valorisation.png" alt="illustration valorisation" class="mx-auto h-24 w-24" />
+        <li
+          class="
+            flex flex-col
+            space-y-6
+            rounded
+            bg-white
+            p-8
+            flex-shrink-0
+            select-none
+            cursor-pointer
+          "
+        >
+          <img
+            src="/valorisation.png"
+            alt="illustration valorisation"
+            class="mx-auto h-24 w-24"
+            draggable="false"
+          />
           <div class="flex flex-row items-center space-x-2 text-sm">
             <span>Valorisation</span>
             <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="stroke-current">
