@@ -73,8 +73,6 @@ function clipToLeft(element) {
 
 // Create a dataset to move cards
 cards.forEach((card, index) => {
-  const offsetWidth = card.previousElementSibling ? card.previousElementSibling.offsetWidth : 0
-
   const margin = index * 24
   const total = count + margin
   dataset.push({
@@ -88,6 +86,7 @@ cards.forEach((card, index) => {
   count += card.offsetWidth
 })
 
+// Arrow
 arrowRight.addEventListener('click', () => {
   const indexItem = dataset.findIndex(
     ({ totalWidth, totalMargin }) => totalMovement <= totalMargin + totalWidth
@@ -121,6 +120,7 @@ arrowRight.addEventListener('click', () => {
   }
 })
 
+// Arrow
 arrowLeft.addEventListener('click', () => {
   const indexItem = dataset.findIndex(
     ({ totalWidth, totalMargin }) => totalMovement <= totalMargin + totalWidth
@@ -142,12 +142,14 @@ arrowLeft.addEventListener('click', () => {
   }
 })
 
+// Mouse
 slider.addEventListener('mousedown', () => {
   isMoving = true
   // Remove transition class to avoid animation on mousemove
   slider.classList.remove(...sliderTransitionClass)
 })
 
+// Mouse
 slider.addEventListener('mousemove', (e) => {
   if (isMoving) {
     const { movementX } = e
@@ -155,6 +157,7 @@ slider.addEventListener('mousemove', (e) => {
   }
 })
 
+// Mouse
 slider.addEventListener('mouseup', () => {
   isMoving = false
 
@@ -170,8 +173,6 @@ slider.addEventListener('mouseup', () => {
     // Follow
 
     // Find the nearest card
-    console.table(dataset)
-    console.log(totalMovement)
     const item = dataset.find(({ totalMiddle }) => totalMovement < totalMiddle)
 
     slider.classList.add(...sliderTransitionClass)
@@ -182,6 +183,7 @@ slider.addEventListener('mouseup', () => {
   }
 })
 
+// Mouse
 document.addEventListener('mouseout', (e) => {
   const from = e.relatedTarget || e.toElement
   // Trigger only if mouseout from the page
@@ -200,11 +202,51 @@ document.addEventListener('mouseout', (e) => {
   }
 })
 
-// il faut faire la gestion de l'aimantation en utilisant un find dans le mousemove dans le dataset avec le totalMovement
-// il fuat ajouter transform duration-500 lorsuqe il revient à 0 ou lorsqu'il se calera (et commencer à faire du fonctionnel)
+// Touch
+let previousTouchX = 0
+slider.addEventListener('touchstart', (e) => {
+  isMoving = true
+  previousTouchX = e.touches[0].clientX
+  // Remove transition class to avoid animation on touchmove
+  slider.classList.remove(...sliderTransitionClass)
+})
 
-// Voir les events de dispo parce qu'il va falloir gérer la sourie et le touche
-// Ensuite, il faut jouer avec la quantité de déplacement pour modifier le translate dans le style
-// Il faudra aussi voir la gestion des arrows
-// Voir la gestion au clavier ensuite
-// il faut doucumenter à mort le code parce qu'il est pas simple
+// Touch
+slider.addEventListener('touchmove', (e) => {
+  e.preventDefault()
+  if (isMoving) {
+    const startX = previousTouchX
+    const touch = e.touches[0]
+    const movementX = touch.clientX - startX
+
+    totalMovement = translateCards(slider, totalMovement, -1 * movementX)
+
+    previousTouchX = touch.clientX
+  }
+})
+
+// Touch
+slider.addEventListener('touchend', () => {
+  isMoving = false
+
+  const lastCard = cards[cards.length - 1]
+  const posLastCard = lastCard.getBoundingClientRect()
+  const windowSize = window.innerWidth
+
+  if (posLastCard.right < windowSize) {
+    clipToRight(posLastCard)
+  } else if (totalMovement < 0) {
+    clipToLeft(slider)
+  } else {
+    // Follow
+
+    // Find the nearest card
+    const item = dataset.find(({ totalMiddle }) => totalMovement < totalMiddle)
+
+    slider.classList.add(...sliderTransitionClass)
+    totalMovement = translateCards(slider, item.totalWidth + item.totalMargin, 0)
+
+    arrowLeft.disabled = false
+    arrowRight.disabled = false
+  }
+})

@@ -1,7 +1,22 @@
 {
-  "name": "carousel",
-  "version": "0.0.0",
+  "name": "categories-carousel",
+  "description": "Custom carousel to show a list of categories",
+  "keywords": [
+    "carousel",
+    "tailwind",
+    "vanilla"
+  ],
+  "main": "main.js",
+  "version": "1.0.0",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "Estéban Soubiran",
+    "email": "e.soubiran25@gmail.com",
+    "url": "https://github.com/Barbapapazes"
+  },
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "dev": "vite",
     "build": "vite build",
     "serve": "vite preview"
