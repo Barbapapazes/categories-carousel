@@ -17,34 +17,35 @@
       <div class="flex flex-row justify-between items-center">
         <h2 class="text-4xl font-bold font-darker">Catégories</h2>
         <div class="flex flex-row space-x-6">
-          <svg
-            width="24"
-            height="25"
-            viewBox="0 0 24 25"
-            fill="none"
-            class="stroke-current text-primary-base"
+          <button
+            id="arrow-left"
+            class="disabled:text-grey-primary-light disabled:cursor-not-allowed"
+            title="arrow-left"
+            disabled
           >
-            <path
-              d="M15 19.5L8 12.5L15 5.5"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <svg
-            width="24"
-            height="25"
-            viewBox="0 0 24 25"
-            fill="none"
-            class="stroke-current text-primary-base"
+            <svg width="24" height="25" viewBox="0 0 24 25" fill="none" class="stroke-current">
+              <path
+                d="M15 19.5L8 12.5L15 5.5"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <button
+            id="arrow-right"
+            title="arrow-right"
+            class="disabled:text-grey-primary-light disabled:cursor-not-allowed"
           >
-            <path
-              d="M9 5.5L16 12.5L9 19.5"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+            <svg width="24" height="25" viewBox="0 0 24 25" fill="none" class="stroke-current">
+              <path
+                d="M9 5.5L16 12.5L9 19.5"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
         </div>
       </div>
       <ul id="slider" class="flex flex-row space-x-6 text-primary-base">
@@ -261,6 +262,6 @@
       </ul>
     </section>
 
-    <script type="module" src="/main.js"></script>
+    <script type="module" src="/main.js" defer></script>
   </body>
 </html>
