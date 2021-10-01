@@ -32,10 +32,10 @@ function translateCards(element, total, movement) {
  *
  * @return {number}
  */
-function resetSlider(element, transitionClass) {
+function resetSlider(element, transitionClass, total = 0) {
   element.classList.add(...transitionClass)
-  translateCards(element, 0, 0)
-  return 0
+  translateCards(element, total, 0)
+  return total
 }
 
 cards.forEach((card) => {
@@ -44,8 +44,8 @@ cards.forEach((card) => {
     width: card.offsetWidth,
     height: card.offsetHeight,
     total: count,
-    // Get the next card if 80% if out of the viewport
-    withPrevious: count + 0.5 * offsetWidth,
+    // Get the next card if 20% if out of the viewport
+    withPrevious: count + 0.2 * offsetWidth,
   })
   // Remove, because translate is negative, the margin
   count += card.offsetWidth
@@ -64,11 +64,21 @@ slider.addEventListener('mousemove', (e) => {
   }
 })
 
-slider.addEventListener('mouseup', () => {
+slider.addEventListener('mouseup', (e) => {
   isMoving = false
 
-  console.log(totalMovement)
-  if (totalMovement > 0) {
+  const lastCard = cards[cards.length - 1]
+  const windowSize = window.innerWidth
+  const posLastCard = lastCard.getBoundingClientRect().right
+  console.log(totalMovement + (windowSize - posLastCard) - 16)
+  if (posLastCard < windowSize) {
+    totalMovement = resetSlider(
+      slider,
+      sliderTransitionClass,
+      // Get distance between last card right and window right
+      totalMovement + (windowSize - posLastCard) - 16
+    )
+  } else if (totalMovement > 0) {
     totalMovement = resetSlider(slider, sliderTransitionClass)
   } else {
     const indexItem = dataset.findIndex(({ withPrevious }) => -totalMovement < withPrevious)
