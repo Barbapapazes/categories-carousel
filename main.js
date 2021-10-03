@@ -198,6 +198,15 @@ document.addEventListener('mouseout', (e) => {
       clipToRight(posLastCard)
     } else if (totalMovement < 0) {
       clipToLeft(slider)
+    } else {
+      // Find the nearest card
+      const item = dataset.find(({ totalMiddle }) => totalMovement < totalMiddle)
+
+      slider.classList.add(...sliderTransitionClass)
+      totalMovement = translateCards(slider, item.totalWidth + item.totalMargin, 0)
+
+      arrowLeft.disabled = false
+      arrowRight.disabled = false
     }
   }
 })
