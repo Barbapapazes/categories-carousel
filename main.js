@@ -99,10 +99,13 @@ arrowRight.addEventListener('click', () => {
 
   // Last card can't unplug from the right
   if (leftLastCard < window.innerWidth + widthLastCard) {
-    const lastMovement = leftLastCard - window.innerWidth + widthLastCard + 16
+    const lastItem = dataset[dataset.length - 1]
+    const sliderWidth = lastItem.totalWidth + lastItem.totalMargin + lastItem.width
+
+    const lastMovement = sliderWidth - window.innerWidth + 32
 
     slider.classList.add(...sliderTransitionClass)
-    totalMovement = translateCards(slider, totalMovement, lastMovement)
+    totalMovement = translateCards(slider, lastMovement, 0)
 
     if (arrowRight === document.activeElement) {
       arrowLeft.focus()
