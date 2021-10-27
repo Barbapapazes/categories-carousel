@@ -48,6 +48,7 @@ function resetSlider(element, transitionClass, total = 0) {
  */
 function clipToRight(element) {
   // Right
+  console.trace('clipToRight')
   const finalOffset = totalMovement - (window.innerWidth - element.right) + 16
   totalMovement = resetSlider(
     slider,
@@ -56,6 +57,8 @@ function clipToRight(element) {
     finalOffset
   )
 
+  // Reset the state of arrows
+  arrowLeft.disabled = false
   arrowRight.disabled = true
 }
 
@@ -66,8 +69,11 @@ function clipToRight(element) {
  */
 function clipToLeft(element) {
   // Fix to the left
+  console.trace('clipToLeft')
   totalMovement = resetSlider(element, sliderTransitionClass)
 
+  // Reset the state of arrows
+  arrowRight.disabled = false
   arrowLeft.disabled = true
 }
 
