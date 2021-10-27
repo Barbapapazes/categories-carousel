@@ -168,9 +168,10 @@ slider.addEventListener('mouseup', () => {
   const posLastCard = lastCard.getBoundingClientRect()
   const windowSize = window.innerWidth
 
-  if (posLastCard.right < windowSize) {
+  const sliderWidth = dataset[dataset.length - 1].totalWidth
+  if (posLastCard.right < windowSize && sliderWidth > windowSize) {
     clipToRight(posLastCard)
-  } else if (totalMovement < 0) {
+  } else if (totalMovement < 0 || sliderWidth < windowSize) {
     clipToLeft(slider)
   } else {
     // Follow
@@ -197,9 +198,10 @@ document.addEventListener('mouseout', (e) => {
     const posLastCard = lastCard.getBoundingClientRect()
     const windowSize = window.innerWidth
 
-    if (posLastCard.right < windowSize) {
+    const sliderWidth = dataset[dataset.length - 1].totalWidth
+    if (posLastCard.right < windowSize && sliderWidth > windowSize) {
       clipToRight(posLastCard)
-    } else if (totalMovement < 0) {
+    } else if (totalMovement < 0 || sliderWidth < windowSize) {
       clipToLeft(slider)
     } else {
       // Find the nearest card
