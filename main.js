@@ -86,12 +86,12 @@ cards.forEach((card, index) => {
   count += card.offsetWidth
 })
 
-// Arrow
+// Arrow Right
 arrowRight.addEventListener('click', () => {
   const indexItem = dataset.findIndex(
     ({ totalWidth, totalMargin }) => totalMovement <= totalMargin + totalWidth
   )
-  const item = dataset[indexItem + 1]
+  const item = dataset[indexItem + 1] ?? dataset[0]
 
   const lastCard = cards[cards.length - 1]
   const leftLastCard = lastCard.getBoundingClientRect().left
@@ -123,13 +123,14 @@ arrowRight.addEventListener('click', () => {
   }
 })
 
-// Arrow
+// Arrow Left
 arrowLeft.addEventListener('click', () => {
   const indexItem = dataset.findIndex(
     ({ totalWidth, totalMargin }) => totalMovement <= totalMargin + totalWidth
   )
 
-  const item = dataset[indexItem - 1]
+  const item = dataset[indexItem - 1] ?? dataset[0]
+
   slider.classList.add(...sliderTransitionClass)
   totalMovement = translateCards(slider, item.totalMargin + item.totalWidth, 0)
 
@@ -247,9 +248,10 @@ slider.addEventListener('touchend', () => {
   const posLastCard = lastCard.getBoundingClientRect()
   const windowSize = window.innerWidth
 
-  if (posLastCard.right < windowSize) {
+  const sliderWidth = dataset[dataset.length - 1].totalWidth
+  if (posLastCard.right < windowSize && sliderWidth > windowSize) {
     clipToRight(posLastCard)
-  } else if (totalMovement < 0) {
+  } else if (totalMovement < 0 || sliderWidth < windowSize) {
     clipToLeft(slider)
   } else {
     // Follow
